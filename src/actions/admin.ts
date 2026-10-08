@@ -6,7 +6,7 @@ import Category from '@/models/Category';
 import { auth } from '@/auth';
 import { revalidatePath } from 'next/cache';
 import { v2 as cloudinary } from 'cloudinary';
-import { writeFile } from 'fs/promises';
+import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
 
 cloudinary.config({
@@ -66,7 +66,9 @@ export async function addProduct(formData: FormData) {
       } else {
         // fallback to local fs
         const filename = `${Date.now()}-${file.name.replace(/\s/g, '_')}`;
-        const filepath = path.join(process.cwd(), 'public/uploads', filename);
+        const uploadDir = path.join(process.cwd(), 'public/uploads');
+        await mkdir(uploadDir, { recursive: true });
+        const filepath = path.join(uploadDir, filename);
         await writeFile(filepath, buffer);
         imageUrls.push(`/uploads/${filename}`);
       }
