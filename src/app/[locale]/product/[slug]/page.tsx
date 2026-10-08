@@ -18,7 +18,8 @@ export default async function ProductPage({
 
   await dbConnect();
   
-  let product = await Product.findOne({ slug, isActive: true }).populate('category');
+  let productDoc = await Product.findOne({ slug, isActive: true }).populate('category').lean();
+  let product: any = productDoc ? JSON.parse(JSON.stringify(productDoc)) : null;
 
   // Fallback for demonstration since DB is empty
   if (!product) {
