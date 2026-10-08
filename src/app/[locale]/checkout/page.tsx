@@ -117,26 +117,18 @@ export default function CheckoutPage({ params }: { params: { locale: string } })
             </div>
 
             <h2 style={{ fontSize: '24px', marginTop: '20px', color: 'var(--raat)' }}>
-              {locale === 'bn' ? 'পেমেন্ট মেথড' : 'Payment Method'}
+              {locale === 'bn' ? 'পেমেন্ট মেথড (ক্যাশ অন ডেলিভারি)' : 'Payment Method (Cash on Delivery)'}
             </h2>
-            <div className="options-flex" style={{ marginBottom: '15px' }}>
-              <label style={{ flex: 1, padding: '15px', border: paymentMethod === 'cod' ? '2px solid var(--sindoor)' : '1px solid #ccc', borderRadius: '8px', cursor: 'pointer', background: paymentMethod === 'cod' ? 'var(--ivory)' : '#fff' }}>
-                <input type="radio" name="payOption" checked={paymentMethod === 'cod'} onChange={() => setPaymentMethod('cod')} style={{ display: 'none' }} />
-                <div style={{ fontWeight: 'bold' }}>{locale === 'bn' ? 'ক্যাশ অন ডেলিভারি (শুধু ডেলিভারি চার্জ অগ্রিম)' : 'Cash on Delivery (Advance Delivery Charge)'}</div>
-              </label>
-              <label style={{ flex: 1, padding: '15px', border: paymentMethod === 'bkash' ? '2px solid var(--sindoor)' : '1px solid #ccc', borderRadius: '8px', cursor: 'pointer', background: paymentMethod === 'bkash' ? 'var(--ivory)' : '#fff' }}>
-                <input type="radio" name="payOption" checked={paymentMethod === 'bkash'} onChange={() => setPaymentMethod('bkash')} style={{ display: 'none' }} />
-                <div style={{ fontWeight: 'bold' }}>{locale === 'bn' ? 'সম্পূর্ণ পেমেন্ট (bKash/Nagad)' : 'Full Payment (bKash/Nagad)'}</div>
-              </label>
-            </div>
-
+            
             <div style={{ background: 'rgba(201, 162, 75, 0.1)', padding: '20px', borderRadius: '8px', border: '1px dashed var(--sindoor)' }}>
               <p style={{ marginBottom: '15px', color: 'var(--raat)' }}>
+                {locale === 'bn' ? 'অর্ডার কনফার্ম করার জন্য শুধুমাত্র ডেলিভারি চার্জটি অগ্রিম প্রদান করতে হবে। বাকি টাকা প্রোডাক্ট হাতে পাওয়ার পর ক্যাশ অন ডেলিভারিতে দিতে পারবেন।' : 'To confirm the order, only the delivery charge needs to be paid in advance. You can pay the remaining amount on delivery.'}
+                <br /><br />
                 {locale === 'bn' ? 'অনুগ্রহ করে নিচের নম্বরে সেন্ড মানি করুন:' : 'Please Send Money to the number below:'}
                 <br /><strong style={{ fontSize: '20px', color: 'var(--sindoor)' }}>01403926676</strong>
                 <br /><span style={{ fontSize: '14px', fontWeight: 'bold' }}>{locale === 'bn' ? '(bKash Personal Number - Only Send Money)' : '(bKash Personal Number - Only Send Money)'}</span>
                 <br /><br />
-                {locale === 'bn' ? `অর্ডার কনফার্ম করতে আপনাকে ৳ ${advanceAmount} সেন্ড মানি করতে হবে।` : `You need to Send Money ৳ ${advanceAmount} to confirm the order.`}
+                {locale === 'bn' ? `আপনার অগ্রিম পে করতে হবে: ৳ ${deliveryCharge}` : `You need to advance pay: ৳ ${deliveryCharge}`}
               </p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
                 <div>
@@ -176,15 +168,15 @@ export default function CheckoutPage({ params }: { params: { locale: string } })
             <span>৳ {totalPrice}</span>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px', fontSize: '16px' }}>
-            <span>{locale === 'bn' ? 'ডেলিভারি চার্জ' : 'Delivery Charge'}</span>
+            <span>{locale === 'bn' ? 'ডেলিভারি চার্জ (অগ্রিম)' : 'Delivery Charge (Advance)'}</span>
             <span style={{ color: '#27ae60' }}>৳ {deliveryCharge}</span>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px', paddingTop: '20px', borderTop: '1px solid #ddd', fontSize: '22px', fontWeight: 'bold', color: 'var(--sindoor)' }}>
-            <span>{locale === 'bn' ? 'মোট' : 'Total'}</span>
-            <span>৳ {finalTotal}</span>
+            <span>{locale === 'bn' ? 'ক্যাশ অন ডেলিভারি' : 'Cash on Delivery'}</span>
+            <span>৳ {totalPrice}</span>
           </div>
           <div style={{ marginTop: '20px', background: 'rgba(39, 174, 96, 0.1)', padding: '15px', borderRadius: '8px', textAlign: 'center', color: '#27ae60', fontWeight: 'bold' }}>
-            {locale === 'bn' ? `এখন পে করতে হবে: ৳ ${advanceAmount}` : `Pay Now: ৳ ${advanceAmount}`}
+            {locale === 'bn' ? `অর্ডার কনফার্ম করতে বিকাশ করুন: ৳ ${deliveryCharge}` : `Pay Now to Confirm: ৳ ${deliveryCharge}`}
           </div>
         </div>
       </div>
