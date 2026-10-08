@@ -17,11 +17,9 @@ export async function createOrder(formData: FormData) {
       return { success: false, error: 'Cart is empty' };
     }
 
-    const totalAmount = cartItems.reduce((acc: number, item: any) => acc + (item.price * item.quantity), 0);
-
     const paymentMethod = formData.get('paymentMethod') as string || 'cod';
-    const courier = formData.get('courier') as string || 'steadfast';
-    const deliveryCharge = courier === 'express' ? 120 : 60; // Just example pricing
+    const location = formData.get('location') as string || 'inside';
+    const deliveryCharge = location === 'outside' ? 200 : 100;
     
     const orderData = {
       orderNo: `SB${Date.now()}`,
@@ -38,16 +36,16 @@ export async function createOrder(formData: FormData) {
         phone: formData.get('phone'),
         district: formData.get('district'),
         address: formData.get('address'),
-        courier: courier
+        courier: location === 'outside' ? 'Outside Dhaka' : 'Inside Dhaka'
       },
       subtotal: totalAmount,
       deliveryCharge: deliveryCharge,
-      codAmount: paymentMethod === 'cod' ? (totalAmount + deliveryCharge) : 0,
+      codAmount: paymentMethod === 'cod' ? totalAmount : 0,
       deliveryPayment: {
         method: paymentMethod,
-        senderNumber: paymentMethod !== 'cod' ? formData.get('senderNumber') : 'COD',
-        trxId: paymentMethod !== 'cod' ? formData.get('trxId') : `COD-${Date.now()}`,
-        amount: paymentMethod !== 'cod' ? (totalAmount + deliveryCharge) : 0,
+        senderNumber: formData.get('senderNumber') || '',
+        trxId: formData.get('trxId') || '',
+        amount: paymentMethod === 'cod' ? deliveryCharge : (totalAmount + deliveryCharge),
         status: 'pending'
       },
       status: 'Payment যাচাই',
