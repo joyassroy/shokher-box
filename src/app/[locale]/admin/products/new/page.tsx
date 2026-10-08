@@ -1,26 +1,37 @@
 'use client';
 
-import { addProduct } from '@/actions/admin';
-import { useState } from 'react';
+import { addProduct, getCategories } from '@/actions/admin';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function AddProductPage({ params }: { params: { locale: string } }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [categories, setCategories] = useState<any[]>([]);
   const router = useRouter();
+
+  useEffect(() => {
+    getCategories().then(cats => setCategories(cats));
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
-    const formData = new FormData(e.currentTarget);
-    const res = await addProduct(formData);
-    
-    if (res.success) {
-      router.push(`/${params.locale}/admin/products`);
-    } else {
-      setError(res.error || 'Failed to add product');
+    try {
+      const formData = new FormData(e.currentTarget);
+      const res = await addProduct(formData);
+      
+      if (res.success) {
+        router.push(`/${params.locale}/admin/products`);
+      } else {
+        setError(res.error || 'Failed to add product');
+        setLoading(false);
+      }
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message || 'Error occurred while uploading');
       setLoading(false);
     }
   };
@@ -31,11 +42,21 @@ export default function AddProductPage({ params }: { params: { locale: string } 
       
       {error && <div style={{ padding: '15px', background: '#fdedec', color: '#e74c3c', borderRadius: '8px', marginBottom: '20px' }}>{error}</div>}
 
-      <form onSubmit={handleSubmit} style={{ background: '#fff', padding: '30px', borderRadius: '12px', boxShadow: '0 4px 6px rgba(0,0,0,0.05)', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <form onSubmit={handleSubmit} encType="multipart/form-data" style={{ background: '#fff', padding: '30px', borderRadius: '12px', boxShadow: '0 4px 6px rgba(0,0,0,0.05)', display: 'flex', flexDirection: 'column', gap: '20px' }}>
         
         <div>
           <label style={{ display: 'block', marginBottom: '8px', color: '#34495e', fontWeight: 'bold' }}>Product Title (Bengali) *</label>
           <input type="text" name="titleBn" required style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #bdc3c7' }} />
+        </div>
+
+        <div>
+          <label style={{ display: 'block', marginBottom: '8px', color: '#34495e', fontWeight: 'bold' }}>Category *</label>
+          <select name="categoryId" required style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #bdc3c7', background: '#fff' }}>
+            <option value="">Select a category</option>
+            {categories.map(cat => (
+              <option key={cat.id} value={cat.id}>{cat.nameBn} ({cat.slug})</option>
+            ))}
+          </select>
         </div>
 
         <div>

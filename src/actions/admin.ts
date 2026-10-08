@@ -93,6 +93,23 @@ export async function addProduct(formData: FormData) {
     return { success: true };
   } catch (error: any) {
     console.error('Error adding product:', error);
-    return { success: false, error: error.message };
+    const errorMsg = error.message || JSON.stringify(error);
+    return { success: false, error: errorMsg };
+  }
+}
+
+export async function getCategories() {
+  try {
+    await dbConnect();
+    const categories = await Category.find().lean();
+    return categories.map((c: any) => ({
+      id: c._id.toString(),
+      nameBn: c.name.bn,
+      nameEn: c.name.en,
+      slug: c.slug
+    }));
+  } catch (error) {
+    console.error(error);
+    return [];
   }
 }
