@@ -117,12 +117,15 @@ export default async function CategoryPage({
               <Link href={`/${locale}/product/${product.slug}`} key={product._id.toString()} className="product-card">
                 <div className="product-img-wrapper">
                   <Image src={product.images[0] || '/images/craft_main.jpg'} alt={product.title[locale] as string} fill className="product-img" />
-                  {product.isFeatured && <span className="badge featured">{locale === 'bn' ? 'বেস্টসেলার' : 'Bestseller'}</span>}
+                  {product.isFeatured && <span className="badge featured">{locale === 'bn' ? 'হট' : 'HOT'}</span>}
                 </div>
                 <div className="product-info">
                   <h3 className="product-title">{product.title[locale]}</h3>
-                  <div className="product-price">
+                  <div className="price-row">
                     <span className="current-price">৳ {product.price}</span>
+                  </div>
+                  <div className="card-action">
+                    <span className="view-btn">{locale === 'bn' ? 'বিস্তারিত দেখুন' : 'View Details'}</span>
                   </div>
                 </div>
               </Link>

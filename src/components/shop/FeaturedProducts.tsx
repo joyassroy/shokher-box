@@ -45,29 +45,28 @@ export default async function FeaturedProducts({ locale }: { locale: Locale }) {
       
       <div className="product-grid">
         {products.map((product) => (
-          <div key={product.id} className="product-card">
-            <div className="product-image-container">
+          <a href={`/${locale}/product/sample-slug`} key={product.id} className="product-card">
+            <div className="product-img-wrapper">
               <Image 
                 src={product.image} 
                 alt={product.title} 
                 fill 
-                className="product-image"
+                className="product-img"
                 sizes="(max-width: 768px) 100vw, 25vw"
               />
-              <button className="add-to-cart-quick">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-                  <line x1="3" y1="6" x2="21" y2="6"></line>
-                  <path d="M16 10a4 4 0 0 1-8 0"></path>
-                </svg>
-              </button>
+              <span className="badge featured">{locale === 'bn' ? 'হট' : 'HOT'}</span>
             </div>
             <div className="product-info">
               <span className="product-category">{product.category}</span>
               <h3 className="product-title">{product.title}</h3>
-              <p className="product-price">{product.price}</p>
+              <div className="price-row">
+                <p className="current-price">{product.price}</p>
+              </div>
+              <div className="card-action">
+                <span className="view-btn">{locale === 'bn' ? 'বিস্তারিত দেখুন' : 'View Details'}</span>
+              </div>
             </div>
-          </div>
+          </a>
         ))}
       </div>
     </section>
