@@ -17,6 +17,7 @@ export async function createOrder(formData: FormData) {
       return { success: false, error: 'Cart is empty' };
     }
 
+    const totalAmount = cartItems.reduce((acc: number, item: any) => acc + (item.price * item.quantity), 0);
     const paymentMethod = formData.get('paymentMethod') as string || 'cod';
     const location = formData.get('location') as string || 'inside';
     const deliveryCharge = location === 'outside' ? 200 : 100;
