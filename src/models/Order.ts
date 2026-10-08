@@ -30,7 +30,7 @@ const OrderSchema = new mongoose.Schema(
     deliveryCharge: { type: Number, required: true },
     codAmount: { type: Number, required: true }, // subtotal - discount
     deliveryPayment: {
-      method: { type: String, enum: ['bkash', 'nagad', 'rocket'], required: true },
+      method: { type: String, enum: ['bkash', 'nagad', 'rocket', 'cod'], required: true },
       senderNumber: { type: String, required: true },
       trxId: { type: String, required: true, unique: true },
       amount: { type: Number, required: true },
