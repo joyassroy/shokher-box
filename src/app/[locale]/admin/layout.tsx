@@ -16,9 +16,9 @@ export default async function AdminLayout({
   }
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: '#f5f6fa' }}>
+    <div className="admin-container">
       {/* Sidebar */}
-      <aside style={{ width: '250px', background: '#2c3e50', color: '#fff', padding: '20px' }}>
+      <aside className="admin-sidebar">
         <h2 style={{ marginBottom: '30px', color: '#f39c12' }}>Admin Panel</h2>
         <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '15px' }}>
           <li><a href={`/${locale}/admin`} style={{ color: '#ecf0f1', textDecoration: 'none' }}>Dashboard</a></li>
@@ -32,9 +32,50 @@ export default async function AdminLayout({
       </aside>
 
       {/* Main Content */}
-      <main style={{ flex: 1, padding: '40px' }}>
+      <main className="admin-main">
         {children}
       </main>
+
+      <style dangerouslySetInnerHTML={{__html: `
+        .admin-container {
+          display: flex;
+          min-height: 100vh;
+          background: #f5f6fa;
+        }
+        .admin-sidebar {
+          width: 250px;
+          background: #2c3e50;
+          color: #fff;
+          padding: 20px;
+          display: flex;
+          flex-direction: column;
+        }
+        .admin-main {
+          flex: 1;
+          padding: 40px;
+          overflow-x: hidden;
+        }
+        @media (max-width: 768px) {
+          .admin-container {
+            flex-direction: column;
+          }
+          .admin-sidebar {
+            width: 100%;
+            padding: 15px;
+          }
+          .admin-sidebar ul {
+            flex-direction: row !important;
+            flex-wrap: wrap;
+            gap: 10px;
+          }
+          .admin-sidebar h2 {
+            margin-bottom: 15px !important;
+          }
+          .admin-main {
+            padding: 15px;
+          }
+        }
+      `}} />
     </div>
   );
 }

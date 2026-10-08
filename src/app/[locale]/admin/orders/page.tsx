@@ -1,5 +1,6 @@
 import dbConnect from '@/lib/db';
 import Order from '@/models/Order';
+import OrderStatusDropdown from './OrderStatusDropdown';
 
 export default async function AdminOrdersPage() {
   await dbConnect();
@@ -18,7 +19,7 @@ export default async function AdminOrdersPage() {
               <th>Total & Delivery</th>
               <th>Advance Paid</th>
               <th>TrxID & Number</th>
-              <th>Status</th>
+              <th style={{ width: '150px' }}>Status</th>
             </tr>
           </thead>
           <tbody>
@@ -43,15 +44,7 @@ export default async function AdminOrdersPage() {
                   Sender: {order.deliveryPayment?.senderNumber || 'N/A'}
                 </td>
                 <td>
-                  <span style={{ 
-                    padding: '4px 10px', 
-                    borderRadius: '20px', 
-                    fontSize: '12px', 
-                    background: '#fef9e7',
-                    color: '#f39c12'
-                  }}>
-                    {order.status || 'Pending'}
-                  </span>
+                  <OrderStatusDropdown orderId={order._id.toString()} currentStatus={order.status} />
                 </td>
               </tr>
             )) : (
