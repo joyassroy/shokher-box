@@ -12,6 +12,11 @@ export default function CheckoutPage({ params }: { params: { locale: string } })
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('cod');
+  const [courier, setCourier] = useState('steadfast');
+
+  const deliveryCharge = courier === 'express' ? 120 : 60;
+  const finalTotal = totalPrice + deliveryCharge;
 
   if (items.length === 0 && !success) {
     router.push(`/${locale}/cart`);
@@ -46,6 +51,9 @@ export default function CheckoutPage({ params }: { params: { locale: string } })
 
     const formData = new FormData(e.currentTarget);
     formData.append('cartItems', JSON.stringify(items));
+    formData.append('paymentMethod', paymentMethod);
+    formData.append('courier', courier);
+    formData.append('locale', locale);
 
     const res = await createOrder(formData);
     
@@ -61,7 +69,7 @@ export default function CheckoutPage({ params }: { params: { locale: string } })
   return (
     <div style={{ padding: '100px 5%', maxWidth: '1200px', margin: '0 auto', minHeight: '80vh' }}>
       <h1 style={{ color: 'var(--sindoor)', fontSize: '36px', marginBottom: '40px', fontFamily: 'var(--font-cormorant), serif' }}>
-        {locale === 'bn' ? 'চেকআউট (ক্যাশ অন ডেলিভারি)' : 'Checkout (Cash on Delivery)'}
+        {locale === 'bn' ? 'চেকআউট' : 'Checkout'}
       </h1>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 400px', gap: '40px' }}>
@@ -91,6 +99,55 @@ export default function CheckoutPage({ params }: { params: { locale: string } })
               <textarea name="address" required rows={3} style={{ width: '100%', padding: '12px 16px', borderRadius: '8px', border: '1px solid #ccc', fontSize: '16px', resize: 'vertical' }}></textarea>
             </div>
 
+            <h2 style={{ fontSize: '24px', marginTop: '20px', color: 'var(--raat)' }}>
+              {locale === 'bn' ? 'কুরিয়ার সার্ভিস' : 'Courier Service'}
+            </h2>
+            <div style={{ display: 'flex', gap: '15px' }}>
+              <label style={{ flex: 1, padding: '15px', border: courier === 'steadfast' ? '2px solid var(--sindoor)' : '1px solid #ccc', borderRadius: '8px', cursor: 'pointer', background: courier === 'steadfast' ? 'var(--ivory)' : '#fff' }}>
+                <input type="radio" name="courierOption" checked={courier === 'steadfast'} onChange={() => setCourier('steadfast')} style={{ display: 'none' }} />
+                <div style={{ fontWeight: 'bold' }}>Steadfast / Regular</div>
+                <div style={{ color: '#777', fontSize: '14px', marginTop: '5px' }}>৳ 60 (3-5 days)</div>
+              </label>
+              <label style={{ flex: 1, padding: '15px', border: courier === 'express' ? '2px solid var(--sindoor)' : '1px solid #ccc', borderRadius: '8px', cursor: 'pointer', background: courier === 'express' ? 'var(--ivory)' : '#fff' }}>
+                <input type="radio" name="courierOption" checked={courier === 'express'} onChange={() => setCourier('express')} style={{ display: 'none' }} />
+                <div style={{ fontWeight: 'bold' }}>Express Delivery</div>
+                <div style={{ color: '#777', fontSize: '14px', marginTop: '5px' }}>৳ 120 (1-2 days)</div>
+              </label>
+            </div>
+
+            <h2 style={{ fontSize: '24px', marginTop: '20px', color: 'var(--raat)' }}>
+              {locale === 'bn' ? 'পেমেন্ট মেথড' : 'Payment Method'}
+            </h2>
+            <div style={{ display: 'flex', gap: '15px', marginBottom: paymentMethod !== 'cod' ? '15px' : '0' }}>
+              <label style={{ flex: 1, padding: '15px', border: paymentMethod === 'cod' ? '2px solid var(--sindoor)' : '1px solid #ccc', borderRadius: '8px', cursor: 'pointer', background: paymentMethod === 'cod' ? 'var(--ivory)' : '#fff' }}>
+                <input type="radio" name="payOption" checked={paymentMethod === 'cod'} onChange={() => setPaymentMethod('cod')} style={{ display: 'none' }} />
+                <div style={{ fontWeight: 'bold' }}>{locale === 'bn' ? 'ক্যাশ অন ডেলিভারি' : 'Cash on Delivery'}</div>
+              </label>
+              <label style={{ flex: 1, padding: '15px', border: paymentMethod === 'bkash' ? '2px solid var(--sindoor)' : '1px solid #ccc', borderRadius: '8px', cursor: 'pointer', background: paymentMethod === 'bkash' ? 'var(--ivory)' : '#fff' }}>
+                <input type="radio" name="payOption" checked={paymentMethod === 'bkash'} onChange={() => setPaymentMethod('bkash')} style={{ display: 'none' }} />
+                <div style={{ fontWeight: 'bold' }}>bKash / Nagad</div>
+              </label>
+            </div>
+
+            {paymentMethod === 'bkash' && (
+              <div style={{ background: 'rgba(201, 162, 75, 0.1)', padding: '20px', borderRadius: '8px', border: '1px dashed var(--sindoor)' }}>
+                <p style={{ marginBottom: '15px', color: 'var(--raat)' }}>
+                  {locale === 'bn' ? 'অনুগ্রহ করে নিচের নম্বরে সেন্ড মানি করুন:' : 'Please Send Money to the number below:'}
+                  <br /><strong>017XXXXXXXX (Personal)</strong>
+                </p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                  <div>
+                    <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px' }}>{locale === 'bn' ? 'যে নম্বর থেকে টাকা পাঠিয়েছেন' : 'Sender Number'} *</label>
+                    <input type="text" name="senderNumber" required={paymentMethod === 'bkash'} style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #ccc' }} />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px' }}>Transaction ID (TrxID) *</label>
+                    <input type="text" name="trxId" required={paymentMethod === 'bkash'} style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #ccc' }} />
+                  </div>
+                </div>
+              </div>
+            )}
+
             <button disabled={loading} type="submit" style={{ width: '100%', marginTop: '20px', padding: '16px', background: 'var(--sindoor)', color: '#fff', border: 'none', borderRadius: '8px', fontSize: '18px', cursor: loading ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}>
               {loading ? (locale === 'bn' ? 'অপেক্ষা করুন...' : 'Processing...') : (locale === 'bn' ? 'অর্ডার কনফার্ম করুন' : 'Confirm Order')}
             </button>
@@ -117,12 +174,12 @@ export default function CheckoutPage({ params }: { params: { locale: string } })
             <span>৳ {totalPrice}</span>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px', fontSize: '16px' }}>
-            <span>{locale === 'bn' ? 'ডেলিভারি চার্জ' : 'Delivery'}</span>
-            <span style={{ color: '#27ae60' }}>{locale === 'bn' ? 'ফ্রি' : 'Free'}</span>
+            <span>{locale === 'bn' ? 'ডেলিভারি চার্জ' : 'Delivery Charge'}</span>
+            <span style={{ color: '#27ae60' }}>৳ {deliveryCharge}</span>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px', paddingTop: '20px', borderTop: '1px solid #ddd', fontSize: '22px', fontWeight: 'bold', color: 'var(--sindoor)' }}>
             <span>{locale === 'bn' ? 'মোট' : 'Total'}</span>
-            <span>৳ {totalPrice}</span>
+            <span>৳ {finalTotal}</span>
           </div>
         </div>
       </div>
