@@ -10,9 +10,9 @@ import './catalog.css';
 export default async function CategoryPage({ 
   params 
 }: { 
-  params: Promise<{ locale: Locale, category: string }> 
+  params: Promise<{ locale: string, category: string }> 
 }) {
-  const { locale, category: categorySlug } = await params;
+  const { locale, category: categorySlug } = (await params) as { locale: Locale, category: string };
   const dict = await getDictionary(locale);
 
   // Validate basic routes to not catch auth routes

@@ -3,7 +3,7 @@ import '../login/login.css';
 import { Locale } from '@/dictionaries';
 import Link from 'next/link';
 
-export default async function RegisterPage({ params }: { params: Promise<{ locale: Locale }> }) {
+export default async function RegisterPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   
   return (
@@ -14,7 +14,10 @@ export default async function RegisterPage({ params }: { params: Promise<{ local
           <p>{locale === 'bn' ? 'নতুন অ্যাকাউন্ট খুলুন' : 'Create a new account'}</p>
         </div>
         
-        <form action={registerWithCredentials} className="auth-email-form">
+        <form action={async (formData) => {
+          'use server';
+          await registerWithCredentials(formData);
+        }} className="auth-email-form">
           <input type="hidden" name="locale" value={locale} />
           
           <div className="form-group">

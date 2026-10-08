@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { Sparkles, Gem, Truck, Star } from 'lucide-react';
 import './page.css';
 
-export default async function Home({ params }: { params: Promise<{ locale: Locale }> }) {
-  const { locale } = await params;
+export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = (await params) as { locale: Locale };
   
   return (
     <div className="home-container">

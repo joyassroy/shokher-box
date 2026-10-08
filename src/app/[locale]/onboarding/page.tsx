@@ -4,7 +4,7 @@ import { completeOnboarding } from '@/actions/auth';
 import { Locale } from '@/dictionaries';
 import './onboarding.css';
 
-export default async function OnboardingPage({ params }: { params: Promise<{ locale: Locale }> }) {
+export default async function OnboardingPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const session = await auth();
 
@@ -26,7 +26,10 @@ export default async function OnboardingPage({ params }: { params: Promise<{ loc
             : 'We need your mobile number for order confirmation.'}
         </p>
 
-        <form action={completeOnboarding} className="onboarding-form">
+        <form action={async (formData) => {
+          'use server';
+          await completeOnboarding(formData);
+        }} className="onboarding-form">
           <input type="hidden" name="locale" value={locale} />
           <div className="form-group">
             <label>{locale === 'bn' ? 'মোবাইল নম্বর' : 'Mobile Number'}</label>

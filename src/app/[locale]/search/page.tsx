@@ -9,10 +9,10 @@ export default async function SearchPage({
   params,
   searchParams,
 }: {
-  params: Promise<{ locale: Locale }>;
+  params: Promise<{ locale: string }>;
   searchParams: Promise<{ q?: string }>;
 }) {
-  const { locale } = await params;
+  const { locale } = (await params) as { locale: Locale };
   const { q } = await searchParams;
   const dict = await getDictionary(locale);
   const query = q || '';

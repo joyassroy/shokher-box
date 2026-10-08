@@ -4,7 +4,7 @@ import './login.css';
 import { Locale } from '@/dictionaries';
 import Link from 'next/link';
 
-export default async function LoginPage({ params }: { params: Promise<{ locale: Locale }> }) {
+export default async function LoginPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   
   return (
@@ -37,7 +37,10 @@ export default async function LoginPage({ params }: { params: Promise<{ locale: 
           <span>{locale === 'bn' ? 'অথবা' : 'OR'}</span>
         </div>
 
-        <form action={loginWithCredentials} className="auth-email-form">
+        <form action={async (formData) => {
+          'use server';
+          await loginWithCredentials(formData);
+        }} className="auth-email-form">
           <input type="hidden" name="locale" value={locale} />
           <div className="form-group">
             <label>{locale === 'bn' ? 'ইমেইল' : 'Email'}</label>

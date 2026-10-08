@@ -10,9 +10,9 @@ import './product.css';
 export default async function ProductPage({
   params
 }: {
-  params: Promise<{ locale: Locale, slug: string }>
+  params: Promise<{ locale: string, slug: string }>
 }) {
-  const { locale, slug } = await params;
+  const { locale, slug } = (await params) as { locale: Locale, slug: string };
   const dict = await getDictionary(locale);
 
   await dbConnect();

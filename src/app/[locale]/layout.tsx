@@ -31,8 +31,8 @@ const outfit = Outfit({
   variable: "--font-outfit",
 });
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
-  const { locale } = await params;
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = (await params) as { locale: Locale };
   
   const title = locale === 'bn' 
     ? 'শখের বাক্স - প্রিমিয়াম কাস্টম চুড়ি ও এক্সক্লুসিভ থ্রি পিস' 
@@ -85,9 +85,9 @@ export default async function RootLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ locale: Locale }>;
+  params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
+  const { locale } = (await params) as { locale: Locale };
   
   const jsonLd = {
     '@context': 'https://schema.org',
