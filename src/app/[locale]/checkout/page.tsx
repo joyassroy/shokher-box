@@ -4,10 +4,11 @@ import { useCart } from '@/context/CartContext';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createOrder } from '@/actions/order';
+import { use } from 'react';
 
-export default function CheckoutPage({ params }: { params: { locale: string } }) {
+export default function CheckoutPage({ params }: { params: Promise<{ locale: string }> }) {
   const { items, totalPrice, clearCart } = useCart();
-  const locale = params.locale || 'bn';
+  const { locale } = use(params);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');

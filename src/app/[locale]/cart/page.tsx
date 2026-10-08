@@ -4,10 +4,11 @@ import { useCart } from '@/context/CartContext';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { use } from 'react';
 
-export default function CartPage({ params }: { params: { locale: string } }) {
+export default function CartPage({ params }: { params: Promise<{ locale: string }> }) {
   const { items, removeFromCart, updateQuantity, totalPrice } = useCart();
-  const locale = params.locale || 'bn';
+  const { locale } = use(params);
   const router = useRouter();
 
   if (items.length === 0) {
