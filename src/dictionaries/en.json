@@ -1,0 +1,19 @@
+{
+  "navigation": {
+    "home": "Home",
+    "churi": "Churi",
+    "saree": "Three Piece",
+    "jhapi": "Shokher Jhapi",
+    "cart": "Cart",
+    "search": "Search",
+    "wishlist": "Wishlist",
+    "account": "Account",
+    "admin": "Admin"
+  },
+  "home": {
+    "hero_title": "No Boundaries for Passion",
+    "hero_subtitle": "Shokher Baxho brings you the most unique and trendy collections",
+    "shop_now": "Shop Now",
+    "view_all": "View All"
+  }
+}

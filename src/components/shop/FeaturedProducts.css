@@ -1,0 +1,124 @@
+.featured-section {
+  padding: 64px 5%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 32px;
+  border-bottom: 1px solid rgba(201, 162, 75, 0.3);
+  padding-bottom: 16px;
+}
+
+.section-header h2 {
+  font-size: 32px;
+  margin: 0;
+}
+
+.view-all-link {
+  color: var(--sindoor);
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.view-all-link:hover {
+  color: var(--sona);
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 32px;
+}
+
+.product-card {
+  background-color: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(201, 162, 75, 0.1);
+  cursor: pointer;
+}
+
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 25px rgba(107, 15, 26, 0.12);
+  border-color: rgba(201, 162, 75, 0.4);
+}
+
+.product-image-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/5;
+  overflow: hidden;
+  background-color: var(--ivory-deep);
+}
+
+.product-image {
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.product-card:hover .product-image {
+  transform: scale(1.05);
+}
+
+.add-to-cart-quick {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: rgba(251, 246, 236, 0.9);
+  color: var(--sindoor);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.product-card:hover .add-to-cart-quick {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.add-to-cart-quick:hover {
+  background-color: var(--sindoor);
+  color: var(--sona-light);
+}
+
+.product-info {
+  padding: 20px;
+}
+
+.product-category {
+  font-size: 12px;
+  color: var(--sona);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.product-title {
+  font-size: 18px;
+  color: var(--raat);
+  margin: 0 0 12px 0;
+  font-weight: 600;
+}
+
+.product-price {
+  font-size: 20px;
+  color: var(--sindoor);
+  font-weight: 700;
+  margin: 0;
+}

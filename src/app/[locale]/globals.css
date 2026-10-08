@@ -1,0 +1,73 @@
+:root {
+  /* Color Palette */
+  --ivory: #FBF6EC;
+  --ivory-deep: #F3EAD8;
+  --sindoor: #6B0F1A;
+  --sindoor-dark: #4A0A12;
+  --sona: #C9A24B;
+  --sona-light: #E8D49A;
+  --panna: #1F7A4D;
+  --neel: #23408E;
+  --rani: #B5179E;
+  --raat: #1A0E14;
+
+  /* Typography variables set by next/font */
+  /* --font-noto-bengali, --font-hind-bengali, --font-cormorant, --font-outfit */
+
+  /* Shadows and Borders */
+  --shadow-warm: 0 10px 30px -12px rgba(107,15,26,0.18);
+  --border-gold: 1px solid rgba(201,162,75,0.35);
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  background-color: var(--ivory);
+  color: var(--raat);
+}
+
+/* Default to Bengali font, override for en via locale class if needed */
+body {
+  font-family: var(--font-hind-bengali), sans-serif;
+  line-height: 1.7;
+}
+
+html[lang="en"] body {
+  font-family: var(--font-outfit), sans-serif;
+  line-height: 1.5;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-noto-bengali), serif;
+  color: var(--sindoor);
+}
+
+html[lang="en"] h1, html[lang="en"] h2, html[lang="en"] h3, html[lang="en"] h4, html[lang="en"] h5, html[lang="en"] h6 {
+  font-family: var(--font-cormorant), serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+/* Layout container */
+.layout-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}

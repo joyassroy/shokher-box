@@ -1,0 +1,88 @@
+.onboarding-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 160px);
+  padding: 40px 20px;
+  background: var(--ivory);
+}
+
+.onboarding-card {
+  width: 100%;
+  max-width: 440px;
+  background: #fff;
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 10px 40px rgba(107, 15, 26, 0.08);
+  border: 1px solid rgba(201, 162, 75, 0.2);
+  text-align: center;
+}
+
+.onboarding-card h2 {
+  font-family: var(--font-noto-bengali), serif;
+  font-size: 28px;
+  color: var(--sindoor);
+  margin-bottom: 12px;
+}
+
+.onboarding-card p {
+  color: var(--raat);
+  opacity: 0.8;
+  margin-bottom: 32px;
+}
+
+.onboarding-form {
+  text-align: left;
+}
+
+.phone-input-wrapper {
+  display: flex;
+  align-items: center;
+  background: var(--ivory-deep);
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.phone-input-wrapper:focus-within {
+  border-color: var(--sona);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(201, 162, 75, 0.1);
+}
+
+.phone-prefix {
+  padding: 14px 16px;
+  background: rgba(201, 162, 75, 0.15);
+  font-weight: 600;
+  color: var(--sindoor);
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.phone-input-wrapper input {
+  flex: 1;
+  padding: 14px 16px;
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  outline: none;
+}
+
+.primary-btn {
+  width: 100%;
+  padding: 16px;
+  background: var(--sindoor);
+  color: #fff;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 24px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.primary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(107, 15, 26, 0.3);
+}
