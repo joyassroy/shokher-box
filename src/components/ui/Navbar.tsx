@@ -38,17 +38,17 @@ export default async function Navbar({ locale }: { locale: Locale }) {
           <LanguageToggle currentLocale={locale} />
           
           {session?.user ? (
-            <form action={async () => {
-              'use server';
-              await signOut();
-            }} className="auth-nav-form">
-              <span className="user-greeting hidden-mobile">
-                {locale === 'bn' ? 'হ্যালো, ' : 'Hi, '}{session.user.name?.split(' ')[0]}
-              </span>
-              <button type="submit" className="logout-btn hidden-mobile">
-                {locale === 'bn' ? 'লগআউট' : 'Logout'}
-              </button>
-            </form>
+            <div className="auth-nav-form hidden-mobile">
+              <Link href={`/${locale}/profile`} className="user-greeting" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ 
+                  width: '32px', height: '32px', borderRadius: '50%', background: 'var(--sona-light)', 
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--sindoor)', fontWeight: 'bold' 
+                }}>
+                  {session.user.name?.charAt(0) || 'U'}
+                </span>
+                <span>{locale === 'bn' ? 'প্রোফাইল' : 'Profile'}</span>
+              </Link>
+            </div>
           ) : (
             <Link href={`/${locale}/login`} className="login-link hidden-mobile">
               {locale === 'bn' ? 'লগইন' : 'Login'}

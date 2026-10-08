@@ -60,8 +60,8 @@ export default function AddProductPage({ params }: { params: { locale: string } 
         </div>
 
         <div>
-          <label style={{ display: 'block', marginBottom: '8px', color: '#34495e', fontWeight: 'bold' }}>Image URL (Optional, defaults to generic)</label>
-          <input type="text" name="image" placeholder="/images/hero_bangles.jpg" style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #bdc3c7' }} />
+          <label style={{ display: 'block', marginBottom: '8px', color: '#34495e', fontWeight: 'bold' }}>Product Images (First image will be the main one) *</label>
+          <input type="file" name="images" multiple accept="image/*" required style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #bdc3c7' }} />
         </div>
 
         <button disabled={loading} type="submit" style={{ padding: '15px', background: '#27ae60', color: '#fff', border: 'none', borderRadius: '8px', fontSize: '16px', fontWeight: 'bold', cursor: loading ? 'not-allowed' : 'pointer' }}>

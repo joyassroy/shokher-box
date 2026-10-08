@@ -5,6 +5,15 @@ import Product from '@/models/Product';
 import Category from '@/models/Category';
 import { auth } from '@/auth';
 import { revalidatePath } from 'next/cache';
+import { v2 as cloudinary } from 'cloudinary';
+import { writeFile } from 'fs/promises';
+import path from 'path';
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 export async function addProduct(formData: FormData) {
   try {
@@ -36,7 +45,36 @@ export async function addProduct(formData: FormData) {
     const costPrice = Number(formData.get('costPrice'));
     const descriptionBn = formData.get('descriptionBn') as string;
     
-    const imageUrl = formData.get('image') as string || '/images/hero_bangles.jpg';
+    const files = formData.getAll('images') as File[];
+    const imageUrls: string[] = [];
+
+    for (const file of files) {
+      if (file.size === 0) continue;
+      
+      const arrayBuffer = await file.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+
+      if (process.env.CLOUDINARY_CLOUD_NAME) {
+        // upload to cloudinary via stream
+        const url = await new Promise<string>((resolve, reject) => {
+          cloudinary.uploader.upload_stream({ folder: 'shokher_box' }, (error, result) => {
+            if (error) reject(error);
+            else resolve(result!.secure_url);
+          }).end(buffer);
+        });
+        imageUrls.push(url);
+      } else {
+        // fallback to local fs
+        const filename = `${Date.now()}-${file.name.replace(/\s/g, '_')}`;
+        const filepath = path.join(process.cwd(), 'public/uploads', filename);
+        await writeFile(filepath, buffer);
+        imageUrls.push(`/uploads/${filename}`);
+      }
+    }
+
+    if (imageUrls.length === 0) {
+      imageUrls.push('/images/threepiece_hero.jpg');
+    }
 
     await Product.create({
       title: { bn: titleBn, en: titleBn }, // fallback
@@ -45,7 +83,7 @@ export async function addProduct(formData: FormData) {
       description: { bn: descriptionBn, en: descriptionBn },
       price,
       costPrice,
-      images: [imageUrl],
+      images: imageUrls,
       isActive: true
     });
 

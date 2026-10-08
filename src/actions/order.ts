@@ -20,23 +20,33 @@ export async function createOrder(formData: FormData) {
     const totalAmount = cartItems.reduce((acc: number, item: any) => acc + (item.price * item.quantity), 0);
 
     const orderData = {
+      orderNo: `SB${Date.now()}`,
       user: session?.user?.id || null, // Guest checkout supported if null
       items: cartItems.map((item: any) => ({
-        product: item.id.length === 24 ? item.id : null, // Assuming 24 char hex is MongoID, else null for mock
-        quantity: item.quantity,
+        product: item.id.length === 24 ? item.id : null,
+        variant: { size: item.size },
+        qty: item.quantity,
         price: item.price,
-        size: item.size
+        costPrice: item.price * 0.7 // Mock cost price
       })),
-      totalAmount,
-      shippingAddress: {
+      shipping: {
         name: formData.get('name'),
         phone: formData.get('phone'),
-        address: formData.get('address'),
-        district: formData.get('district')
+        district: formData.get('district'),
+        address: formData.get('address')
       },
-      paymentMethod: 'COD',
-      paymentStatus: 'Pending',
-      orderStatus: 'Pending'
+      subtotal: totalAmount,
+      deliveryCharge: 0,
+      codAmount: totalAmount,
+      deliveryPayment: {
+        method: 'bkash',
+        senderNumber: 'COD',
+        trxId: `COD-${Date.now()}`,
+        amount: 0,
+        status: 'pending'
+      },
+      status: 'Payment যাচাই',
+      locale: 'bn'
     };
 
     const newOrder = await Order.create(orderData);

@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import AddToCartBtn from '@/components/ui/AddToCartBtn';
+import ProductGallery from '@/components/ui/ProductGallery';
 import './product.css';
 
 export default async function ProductPage({
@@ -68,18 +69,7 @@ export default async function ProductPage({
 
       <div className="product-layout">
         {/* Left: Image Gallery */}
-        <div className="product-gallery">
-          <div className="main-image">
-            <Image src={product.images[0] || '/images/hero_bangles.jpg'} alt={product.title[locale]} fill className="p-img" />
-          </div>
-          <div className="thumbnail-list">
-            {product.images.map((img: string, i: number) => (
-              <div key={i} className={`thumbnail ${i === 0 ? 'active' : ''}`}>
-                <Image src={img} alt={`Thumbnail ${i}`} fill className="t-img" />
-              </div>
-            ))}
-          </div>
-        </div>
+        <ProductGallery images={product.images} title={product.title[locale]} />
 
         {/* Right: Product Details */}
         <div className="product-details">
