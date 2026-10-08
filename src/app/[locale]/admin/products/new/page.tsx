@@ -2,13 +2,15 @@
 
 import { addProduct, getCategories } from '@/actions/admin';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 
-export default function AddProductPage({ params }: { params: { locale: string } }) {
+export default function AddProductPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [categories, setCategories] = useState<any[]>([]);
+  const [imageInputs, setImageInputs] = useState([0]);
   const router = useRouter();
+  const params = useParams();
 
   useEffect(() => {
     getCategories().then(cats => setCategories(cats));
@@ -82,10 +84,24 @@ export default function AddProductPage({ params }: { params: { locale: string } 
 
         <div>
           <label style={{ display: 'block', marginBottom: '8px', color: '#34495e', fontWeight: 'bold' }}>Product Images (First image will be the main one) *</label>
-          <input type="file" name="images" multiple accept="image/*" required style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #bdc3c7' }} />
+          
+          {imageInputs.map((index, i) => (
+            <div key={index} style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+              <input type="file" name="images" accept="image/*" required={i === 0} style={{ flex: 1, padding: '12px', borderRadius: '8px', border: '1px solid #bdc3c7' }} />
+              {i > 0 && (
+                <button type="button" onClick={() => setImageInputs(prev => prev.filter(val => val !== index))} style={{ padding: '0 15px', background: '#e74c3c', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>
+                  X
+                </button>
+              )}
+            </div>
+          ))}
+
+          <button type="button" onClick={() => setImageInputs(prev => [...prev, Date.now()])} style={{ padding: '10px 15px', background: '#3498db', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', marginTop: '5px', fontWeight: 'bold' }}>
+            + Add Another Image
+          </button>
         </div>
 
-        <button disabled={loading} type="submit" style={{ padding: '15px', background: '#27ae60', color: '#fff', border: 'none', borderRadius: '8px', fontSize: '16px', fontWeight: 'bold', cursor: loading ? 'not-allowed' : 'pointer' }}>
+        <button disabled={loading} type="submit" style={{ padding: '15px', background: '#27ae60', color: '#fff', border: 'none', borderRadius: '8px', fontSize: '16px', fontWeight: 'bold', cursor: loading ? 'not-allowed' : 'pointer', marginTop: '10px' }}>
           {loading ? 'Saving Product...' : 'Save Product'}
         </button>
       </form>
